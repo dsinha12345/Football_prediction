@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Football Match Prediction</h1>
+    <form action="/" method="POST">
+        <label for="home_team">Home Team:</label>
+        <select name="home_team" id="home_team">
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+        </select>
+        <label for="away_team">Away Team:</label>
+        <select name="away_team" id="away_team">
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Predict</button>
+    </form>
+    {% if result %}
+        <div class="result-container">
+            <div class="result-container center-content">
+            <h3>Prediction Result:</h3>
+            <p>{{ result | safe }}</p> <!-- Use safe filter to render HTML content -->
+        </div>
+    </div>
+    {% endif %}
+    {% if filtered_df is not none %}
+    <h3 class="center-content">Previous Stats</h3>
+    <table>
+        <thead>
+            <tr>
+                {% for col in filtered_df.columns %}
+                <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in filtered_df.iterrows() %}
+            <tr>
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+    
+
+</body>
+</html>
